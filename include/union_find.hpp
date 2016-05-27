@@ -1,6 +1,8 @@
 #ifndef UTIL_UNION_FIND_HPP
 #define UTIL_UNION_FIND_HPP
 
+#include <vector>
+
 namespace util{
 
 class union_find{
@@ -32,7 +34,7 @@ private:
 inline int union_find::root(int index) const
 {
     int r = index;
-    while(!isroot(r)){
+    while(!is_root(r)){
         r = parents_[r];
     }
     return r;
@@ -40,10 +42,10 @@ inline int union_find::root(int index) const
 
 inline int union_find::add()
 {
-    parents_.push_back(num);
+    parents_.push_back(num_);
     weights_.push_back(1);
     ids_.push_back(-1);
-    return num++;
+    return num_++;
 }
 
 int union_find::unify(int n1, int n2)
@@ -55,11 +57,11 @@ int union_find::unify(int n1, int n2)
     const int r2 = root(n2);
     const int w2 = weights_[r2];
     
-    if(r1 == r2) return rw1.root;
+    if(r1 == r2) return r1;
     if(w1 < w2){
         parents_[r1] = r2;
         return r2;
-    }elseif(w1 > w2){
+    }else if(w1 > w2){
         parents_[r2] = r1;
         return r1;
     }else{
@@ -72,14 +74,14 @@ int union_find::unify(int n1, int n2)
 int union_find::clusterize()
 {
     int nc = 0;
-    for(int i=0; i<num; ++i){
-        if(isroot(i)){
+    for(int i=0; i<num_; ++i){
+        if(is_root(i)){
             ids_[i] = nc++;
         }else{
             ids_[i] = -1;
         }
     }
-    for(int i=0; i<num; ++i){
+    for(int i=0; i<num_; ++i){
         ids_[i] = ids_[root(i)];
     }
     return nc;
